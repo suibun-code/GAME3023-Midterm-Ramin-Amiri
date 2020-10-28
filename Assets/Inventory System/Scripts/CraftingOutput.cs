@@ -16,6 +16,7 @@ public class CraftingOutput : MonoBehaviour
     [SerializeField]
     private List<Item> waterRecipe;
     private List<Item> ironBallRecipe;
+    private List<Item> yellowPotionRecipe;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +34,7 @@ public class CraftingOutput : MonoBehaviour
     {
         waterRecipe = new List<Item>();
         ironBallRecipe = new List<Item>();
+        yellowPotionRecipe = new List<Item>();
         allRecipes = new Dictionary<Item, List<Item>>();
 
         waterRecipe.Add(masterItemTable.GetItem(7));
@@ -45,18 +47,29 @@ public class CraftingOutput : MonoBehaviour
         waterRecipe.Add(masterItemTable.GetItem(16));
         waterRecipe.Add(masterItemTable.GetItem(16));
 
-        ironBallRecipe.Add(masterItemTable.GetItem(2));
-        ironBallRecipe.Add(masterItemTable.GetItem(3));
+        ironBallRecipe.Add(masterItemTable.GetItem(16));
+        ironBallRecipe.Add(masterItemTable.GetItem(7));
         ironBallRecipe.Add(masterItemTable.GetItem(16));
         ironBallRecipe.Add(masterItemTable.GetItem(16));
-        ironBallRecipe.Add(masterItemTable.GetItem(16));
+        ironBallRecipe.Add(masterItemTable.GetItem(14));
         ironBallRecipe.Add(masterItemTable.GetItem(16));
         ironBallRecipe.Add(masterItemTable.GetItem(16));
         ironBallRecipe.Add(masterItemTable.GetItem(16));
         ironBallRecipe.Add(masterItemTable.GetItem(16));
 
+        yellowPotionRecipe.Add(masterItemTable.GetItem(16));
+        yellowPotionRecipe.Add(masterItemTable.GetItem(7));
+        yellowPotionRecipe.Add(masterItemTable.GetItem(16));
+        yellowPotionRecipe.Add(masterItemTable.GetItem(3));
+        yellowPotionRecipe.Add(masterItemTable.GetItem(14));
+        yellowPotionRecipe.Add(masterItemTable.GetItem(16));
+        yellowPotionRecipe.Add(masterItemTable.GetItem(16));
+        yellowPotionRecipe.Add(masterItemTable.GetItem(16));
+        yellowPotionRecipe.Add(masterItemTable.GetItem(8));
+
         allRecipes.Add(masterItemTable.GetItem(14), waterRecipe);
         allRecipes.Add(masterItemTable.GetItem(8), ironBallRecipe);
+        allRecipes.Add(masterItemTable.GetItem(15), yellowPotionRecipe);
     }
 
     public void GetOutput(List<ItemSlot> panel)
