@@ -17,6 +17,8 @@ public class CraftingOutput : MonoBehaviour
     private List<Item> waterRecipe;
     private List<Item> ironBallRecipe;
     private List<Item> yellowPotionRecipe;
+    private List<Item> redPotionRecipe;
+    private List<Item> grapesRecipe;
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +39,8 @@ public class CraftingOutput : MonoBehaviour
         waterRecipe = new List<Item>();
         ironBallRecipe = new List<Item>();
         yellowPotionRecipe = new List<Item>();
+        redPotionRecipe = new List<Item>();
+        grapesRecipe = new List<Item>();
 
         //The dictionary containing the recipes.
         allRecipes = new Dictionary<Item, List<Item>>();
@@ -72,10 +76,32 @@ public class CraftingOutput : MonoBehaviour
         yellowPotionRecipe.Add(masterItemTable.GetItem(16));
         yellowPotionRecipe.Add(masterItemTable.GetItem(8));
 
+        redPotionRecipe.Add(masterItemTable.GetItem(16));
+        redPotionRecipe.Add(masterItemTable.GetItem(14));
+        redPotionRecipe.Add(masterItemTable.GetItem(16));
+        redPotionRecipe.Add(masterItemTable.GetItem(16));
+        redPotionRecipe.Add(masterItemTable.GetItem(3));
+        redPotionRecipe.Add(masterItemTable.GetItem(16));
+        redPotionRecipe.Add(masterItemTable.GetItem(16));
+        redPotionRecipe.Add(masterItemTable.GetItem(2));
+        redPotionRecipe.Add(masterItemTable.GetItem(16));
+
+        grapesRecipe.Add(masterItemTable.GetItem(3));
+        grapesRecipe.Add(masterItemTable.GetItem(2));
+        grapesRecipe.Add(masterItemTable.GetItem(16));
+        grapesRecipe.Add(masterItemTable.GetItem(16));
+        grapesRecipe.Add(masterItemTable.GetItem(16));
+        grapesRecipe.Add(masterItemTable.GetItem(16));
+        grapesRecipe.Add(masterItemTable.GetItem(16));
+        grapesRecipe.Add(masterItemTable.GetItem(16));
+        grapesRecipe.Add(masterItemTable.GetItem(16));
+
         //Add the recipe to the dictionary and define what the output item will be
         allRecipes.Add(masterItemTable.GetItem(14), waterRecipe);
         allRecipes.Add(masterItemTable.GetItem(8), ironBallRecipe);
         allRecipes.Add(masterItemTable.GetItem(15), yellowPotionRecipe);
+        allRecipes.Add(masterItemTable.GetItem(13), redPotionRecipe);
+        allRecipes.Add(masterItemTable.GetItem(5), grapesRecipe);
     }
 
     public void GetOutput(List<ItemSlot> panel)
