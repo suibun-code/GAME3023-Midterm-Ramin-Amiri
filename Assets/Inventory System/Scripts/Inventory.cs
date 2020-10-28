@@ -16,7 +16,7 @@ public class Inventory : MonoBehaviour, ISaveHandler
 
     [Tooltip("List size determines how many slots there will be. Contents will replaced by copies of the first element")]
     [SerializeField]
-    private List<ItemSlot> itemSlots;
+    public List<ItemSlot> itemSlots;
 
     [Tooltip("Items to add on Start for testing purposes")]
     [SerializeField]
@@ -27,9 +27,22 @@ public class Inventory : MonoBehaviour, ISaveHandler
     /// </summary>
     private string saveKey = "";
 
+    public static Inventory _instance;
+
+    public static Inventory Instance { get { return _instance; } }
+
     // Start is called before the first frame update
     void Start()
     {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+
         InitItemSlots();
         InitSaveInfo();
 
@@ -92,7 +105,7 @@ public class Inventory : MonoBehaviour, ISaveHandler
 
     void OnItemUsed(Item itemUsed)
     {
-       // Debug.Log("Inventory: item used of category " + itemUsed.category);
+        // Debug.Log("Inventory: item used of category " + itemUsed.category);
     }
 
     public void OnSave()
@@ -108,12 +121,12 @@ public class Inventory : MonoBehaviour, ISaveHandler
 
         string saveStr = "";
 
-        foreach(ItemSlot itemSlot in itemSlots)
+        foreach (ItemSlot itemSlot in itemSlots)
         {
             int id = -1;
             int count = 0;
 
-            if(itemSlot.HasItem())
+            if (itemSlot.HasItem())
             {
                 id = itemSlot.ItemInSlot.ItemID;
                 count = itemSlot.ItemCount;
@@ -140,17 +153,18 @@ public class Inventory : MonoBehaviour, ISaveHandler
         char[] delimiters = new char[] { ',' };
         string[] splitData = loadedData.Split(delimiters);
 
-        for(int i = 0; i < itemSlots.Count; i++)
+        for (int i = 0; i < itemSlots.Count; i++)
         {
             int dataIdx = i * 2;
 
             int id = int.Parse(splitData[dataIdx]);
             int count = int.Parse(splitData[dataIdx + 1]);
 
-            if(id < 0)
+            if (id < 0)
             {
                 itemSlots[i].ClearSlot();
-            } else
+            }
+            else
             {
                 itemSlots[i].SetContents(masterItemTable.GetItem(id), count);
             }

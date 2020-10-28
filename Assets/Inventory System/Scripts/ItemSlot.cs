@@ -17,10 +17,6 @@ public class ItemSlot : EventTrigger
     public Item ItemInSlot { get; private set; }
     public int ItemCount { get; private set; }
 
-    [Tooltip("The crafting table to use.")]
-    [SerializeField]
-    public GameObject craftingPanel;
-
     // scene references
     [SerializeField]
     private TMPro.TextMeshProUGUI itemCountText;
@@ -29,6 +25,7 @@ public class ItemSlot : EventTrigger
     private Image itemIcon;
 
     private ItemSlot targetSlot;
+    public List<ItemSlot> allSlots;
 
     protected RectTransform rectTransform = null;
 
@@ -144,6 +141,8 @@ public class ItemSlot : EventTrigger
         base.OnBeginDrag(eventData);
 
         itemIcon.GetComponent<Canvas>().sortingOrder = 2;
+        allSlots = Crafting.Instance.itemSlots;
+        allSlots.AddRange(Inventory.Instance.itemSlots);
     }
 
     public override void OnDrag(PointerEventData eventData)
@@ -152,7 +151,7 @@ public class ItemSlot : EventTrigger
 
         itemIcon.transform.position += (Vector3)eventData.delta;
 
-        foreach (ItemSlot slot in Crafting.Instance.itemSlots)
+        foreach (ItemSlot slot in allSlots)
         {
             if (RectTransformUtility.RectangleContainsScreenPoint(slot.rectTransform, Input.mousePosition))
             {
@@ -164,6 +163,19 @@ public class ItemSlot : EventTrigger
             //if the mouse ISN'T within a valid space, do nothing.
             targetSlot = null;
         }
+
+        // foreach (ItemSlot slot in Inventory.Instance.itemSlots)
+        // {
+        //     if (RectTransformUtility.RectangleContainsScreenPoint(slot.rectTransform, Input.mousePosition))
+        //     {
+        //         //if the mouse is within the space of a valid space, move to it then break out of the foreach loop.
+        //         targetSlot = slot;
+        //         break;
+        //     }
+
+        //     //if the mouse ISN'T within a valid space, do nothing.
+        //     targetSlot = null;
+        // }
     }
 
     public override void OnEndDrag(PointerEventData eventData)
@@ -186,7 +198,7 @@ public class ItemSlot : EventTrigger
             return;
         }
 
-        if (targetSlot.ItemInSlot = ItemInSlot)
+        if (targetSlot.ItemInSlot == ItemInSlot && targetSlot.isActiveAndEnabled)
         {
             targetSlot.ItemCount += ItemCount;
             this.ItemInSlot = null;
