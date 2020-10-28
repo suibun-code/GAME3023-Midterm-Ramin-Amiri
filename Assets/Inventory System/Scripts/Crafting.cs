@@ -12,11 +12,11 @@ public class Crafting : MonoBehaviour, ISaveHandler
 
     [Tooltip("The object which will hold Item Slots as its direct children")]
     [SerializeField]
-    private GameObject inventoryPanel;
+    private GameObject craftingPanel;
 
     [Tooltip("List size determines how many slots there will be. Contents will replaced by copies of the first element")]
     [SerializeField]
-    private List<ItemSlot> itemSlots;
+    public List<ItemSlot> itemSlots;
 
     [Tooltip("Items to add on Start for testing purposes")]
     [SerializeField]
@@ -27,9 +27,24 @@ public class Crafting : MonoBehaviour, ISaveHandler
     /// </summary>
     private string saveKey = "";
 
+    public static Crafting _instance;
+
+    public static Crafting Instance { get { return _instance; } }
+
+
+
     // Start is called before the first frame update
     void Start()
     {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+
         InitItemSlots();
         InitSaveInfo();
 
@@ -48,7 +63,7 @@ public class Crafting : MonoBehaviour, ISaveHandler
         // init item slots
         for (int i = 1; i < itemSlots.Count; i++)
         {
-            GameObject newObject = Instantiate(itemSlots[0].gameObject, inventoryPanel.transform);
+            GameObject newObject = Instantiate(itemSlots[0].gameObject, craftingPanel.transform);
             ItemSlot newSlot = newObject.GetComponent<ItemSlot>();
             itemSlots[i] = newSlot;
         }

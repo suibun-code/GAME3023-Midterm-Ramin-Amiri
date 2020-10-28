@@ -17,6 +17,9 @@ public class ItemSlot : EventTrigger
     public Item ItemInSlot { get; private set; }
     public int ItemCount { get; private set; }
 
+    [Tooltip("The crafting table to use.")]
+    [SerializeField]
+    public GameObject craftingPanel;
 
     // scene references
     [SerializeField]
@@ -25,14 +28,13 @@ public class ItemSlot : EventTrigger
     [SerializeField]
     private Image itemIcon;
 
+    private ItemSlot targetSlot;
+
     protected RectTransform rectTransform = null;
-    private Vector3 originalTransform = Vector3.zero;
 
     private void Start()
     {
         rectTransform = GetComponent<RectTransform>();
-
-        originalTransform = itemIcon.transform.position;
     }
 
     private void Update()
@@ -149,6 +151,19 @@ public class ItemSlot : EventTrigger
         base.OnDrag(eventData);
 
         itemIcon.transform.position += (Vector3)eventData.delta;
+
+        foreach (ItemSlot slot in Crafting.Instance.itemSlots)
+        {
+            if (RectTransformUtility.RectangleContainsScreenPoint(slot.rectTransform, Input.mousePosition))
+            {
+                //if the mouse is within the space of a valid space, move to it then break out of the foreach loop.
+                targetSlot = slot;
+                break;
+            }
+
+            //if the mouse ISN'T within a valid space, do nothing.
+            targetSlot = null;
+        }
     }
 
     public override void OnEndDrag(PointerEventData eventData)
@@ -157,5 +172,40 @@ public class ItemSlot : EventTrigger
 
         itemIcon.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
         itemIcon.GetComponent<Canvas>().sortingOrder = 1;
+
+        if (targetSlot) //if no current space, set back to original space.
+        {
+            Move();
+        }
+    }
+
+    public void Move()
+    {
+        if (targetSlot.HasItem() && targetSlot.ItemInSlot != ItemInSlot)
+        {   
+            return;
+        }
+
+        if (targetSlot.ItemInSlot = ItemInSlot)
+        {
+            targetSlot.ItemCount += ItemCount;
+            this.ItemInSlot = null;
+            this.ItemCount = 0;
+
+            this.b_needsUpdate = true;
+            targetSlot.b_needsUpdate = true;
+        }
+        else
+        {
+            targetSlot.ItemInSlot = ItemInSlot;
+            targetSlot.ItemCount = ItemCount;
+            this.ItemInSlot = null;
+            this.ItemCount = 0;
+
+            this.b_needsUpdate = true;
+            targetSlot.b_needsUpdate = true;
+        }
+
+        targetSlot = null;
     }
 }
