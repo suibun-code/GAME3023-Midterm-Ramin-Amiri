@@ -63,23 +63,15 @@ public class CraftingOutput : MonoBehaviour
     {
         foreach (Item recipeItemType in allRecipes.Keys)
         {
-            List<Item> test = allRecipes[recipeItemType];
-            
+            List<Item> recipe = allRecipes[recipeItemType];
+
             bool recipeFound = true;
-            if (test == ironBallRecipe)
-            {
-                Debug.Log("NICE!@!!!");
-            }
-            else if (test == waterRecipe)
-            {
-                Debug.Log("LOOOOL");
-            }
 
             if (itemSlot.ItemInSlot == masterItemTable.GetItem(16))
             {
                 for (int i = 0; i < 9; i++)
                 {
-                    if (panel[i].ItemInSlot != test[i])
+                    if (panel[i].ItemInSlot != recipe[i])
                     {
                         Debug.Log("not same");
                         recipeFound = false;
@@ -88,19 +80,19 @@ public class CraftingOutput : MonoBehaviour
 
                 if (recipeFound)
                 {
-                ConsumeItems(panel);
-                itemSlot.SetContents(recipeItemType, 1);
-                Debug.Log("DONE");
+                    ConsumeItems(panel, recipe);
+                    itemSlot.SetContents(recipeItemType, 1);
+                    Debug.Log("DONE");
                 }
             }
         }
     }
 
-    public void ConsumeItems(List<ItemSlot> panel)
+    public void ConsumeItems(List<ItemSlot> panel, List<Item> recipe)
     {
         for (int i = 0; i < 9; i++)
         {
-            if (panel[i].ItemInSlot != waterRecipe[i])
+            if (panel[i].ItemInSlot != recipe[i])
             {
 
             }
