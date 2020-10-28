@@ -11,8 +11,11 @@ public class CraftingOutput : MonoBehaviour
 
     public ItemSlot itemSlot;
 
+    private Dictionary<Item, List<Item>> allRecipes;
+
     [SerializeField]
-    private List<Item> potionRecipe;
+    private List<Item> waterRecipe;
+    private List<Item> ironBallRecipe;
 
     // Start is called before the first frame update
     void Start()
@@ -28,30 +31,73 @@ public class CraftingOutput : MonoBehaviour
 
     public void RecipeInit()
     {
-        potionRecipe = new List<Item>();
+        waterRecipe = new List<Item>();
+        ironBallRecipe = new List<Item>();
+        allRecipes = new Dictionary<Item, List<Item>>();
 
-        potionRecipe.Add(masterItemTable.GetItem(7));
-        potionRecipe.Add(masterItemTable.GetItem(2));
-        potionRecipe.Add(masterItemTable.GetItem(16));
-        potionRecipe.Add(masterItemTable.GetItem(16));
-        potionRecipe.Add(masterItemTable.GetItem(16));
-        potionRecipe.Add(masterItemTable.GetItem(16));
-        potionRecipe.Add(masterItemTable.GetItem(16));
-        potionRecipe.Add(masterItemTable.GetItem(16));
-        potionRecipe.Add(masterItemTable.GetItem(16));
+        waterRecipe.Add(masterItemTable.GetItem(7));
+        waterRecipe.Add(masterItemTable.GetItem(2));
+        waterRecipe.Add(masterItemTable.GetItem(16));
+        waterRecipe.Add(masterItemTable.GetItem(16));
+        waterRecipe.Add(masterItemTable.GetItem(16));
+        waterRecipe.Add(masterItemTable.GetItem(16));
+        waterRecipe.Add(masterItemTable.GetItem(16));
+        waterRecipe.Add(masterItemTable.GetItem(16));
+        waterRecipe.Add(masterItemTable.GetItem(16));
+
+        ironBallRecipe.Add(masterItemTable.GetItem(16));
+        ironBallRecipe.Add(masterItemTable.GetItem(14));
+        ironBallRecipe.Add(masterItemTable.GetItem(16));
+        ironBallRecipe.Add(masterItemTable.GetItem(16));
+        ironBallRecipe.Add(masterItemTable.GetItem(3));
+        ironBallRecipe.Add(masterItemTable.GetItem(16));
+        ironBallRecipe.Add(masterItemTable.GetItem(16));
+        ironBallRecipe.Add(masterItemTable.GetItem(16));
+        ironBallRecipe.Add(masterItemTable.GetItem(16));
+
+        allRecipes.Add(masterItemTable.GetItem(14), waterRecipe);
+        allRecipes.Add(masterItemTable.GetItem(8), ironBallRecipe);
     }
 
     public void GetOutput(List<ItemSlot> panel)
     {
-        for (int i = 0; i < 9; i++)
+        foreach (Item recipeItemType in allRecipes.Keys)
         {
-            if (panel[i].ItemInSlot != potionRecipe[i])
+            List<Item> test = allRecipes[recipeItemType];
+
+
+            if (itemSlot.ItemInSlot == masterItemTable.GetItem(16))
             {
-                Debug.Log("not same");
-                return;
+                for (int i = 0; i < 9; i++)
+                {
+                    if (panel[i].ItemInSlot != test[i])
+                    {
+                        Debug.Log("not same");
+                        return;
+                    }
+                }
+
+                ConsumeItems(panel);
+                itemSlot.SetContents(masterItemTable.GetItem(14), 1);
+                Debug.Log("DONE");
             }
         }
-        itemSlot.SetContents(masterItemTable.GetItem(14), 1);
-        Debug.Log("DONE");
+    }
+
+    public void ConsumeItems(List<ItemSlot> panel)
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            if (panel[i].ItemInSlot != waterRecipe[i])
+            {
+
+            }
+            else
+            {
+                panel[i].SetItemCount(panel[i].ItemCount - 1);
+                panel[i].b_needsUpdate = true;
+                Debug.Log("removed 1");
+            }
+        }
     }
 }

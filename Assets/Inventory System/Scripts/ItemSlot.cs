@@ -11,7 +11,7 @@ public class ItemSlot : EventTrigger
     public UnityEvent<Item> onItemUse;
 
     // flag to tell ItemSlot it needs to update itself after being changed
-    private bool b_needsUpdate = true;
+    public bool b_needsUpdate = true;
 
     // Declared with auto-property
     public Item ItemInSlot { get; private set; }
@@ -189,6 +189,11 @@ public class ItemSlot : EventTrigger
         {
             Move();
         }
+    }
+
+    public void SetItemCount(int num)
+    {
+        ItemCount = num;
     }
 
     public void Move()
