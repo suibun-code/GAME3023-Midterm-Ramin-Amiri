@@ -24,8 +24,8 @@ public class ItemSlot : EventTrigger
     [SerializeField]
     private Image itemIcon;
 
-    private ItemSlot targetSlot;
-    public List<ItemSlot> allSlots;
+    private ItemSlot targetSlot; //the target slot to put the current item in.
+    public List<ItemSlot> allSlots; //all of the slots of the panel.
 
     protected RectTransform rectTransform = null;
 
@@ -140,16 +140,16 @@ public class ItemSlot : EventTrigger
     {
         base.OnBeginDrag(eventData);
 
-        itemIcon.GetComponent<Canvas>().sortingOrder = 2;
-        allSlots = Crafting.Instance.itemSlots;
-        allSlots.AddRange(Inventory.Instance.itemSlots);
+        itemIcon.GetComponent<Canvas>().sortingOrder = 2; //set the items canvas to 2 so it is above all other items
+        allSlots = Crafting.Instance.itemSlots; 
+        allSlots.AddRange(Inventory.Instance.itemSlots); //combine all panel itemslots
     }
 
     public override void OnDrag(PointerEventData eventData)
     {
         base.OnDrag(eventData);
 
-        itemIcon.transform.position += (Vector3)eventData.delta;
+        itemIcon.transform.position += (Vector3)eventData.delta; //set the position of the item to the user's cursor
 
         foreach (ItemSlot slot in allSlots)
         {
@@ -187,7 +187,7 @@ public class ItemSlot : EventTrigger
 
         if (targetSlot) //if no current space, set back to original space.
         {
-            Move();
+            Move(); //move the item to the new destination if appropriate
         }
     }
 
@@ -196,7 +196,7 @@ public class ItemSlot : EventTrigger
         ItemCount = num;
     }
 
-    public void Move()
+    public void Move() //moves the item to the new destination, removing the item from the current slot and adding all the properties of that slot to the new slot.
     {
         if (targetSlot.HasItem() && targetSlot.ItemInSlot != ItemInSlot)
         {   

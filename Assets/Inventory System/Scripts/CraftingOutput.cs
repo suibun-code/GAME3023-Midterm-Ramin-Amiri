@@ -30,13 +30,18 @@ public class CraftingOutput : MonoBehaviour
         GetOutput(Crafting.Instance.itemSlots);
     }
 
+    //Initialize all recipes and put it into a dictionary containing the item to be outputted and the items needed to be in the crafting panel.
     public void RecipeInit()
-    {
+    {   
+        //The recipes.
         waterRecipe = new List<Item>();
         ironBallRecipe = new List<Item>();
         yellowPotionRecipe = new List<Item>();
-        allRecipes = new Dictionary<Item, List<Item>>();
 
+        //The dictionary containing the recipes.
+        allRecipes = new Dictionary<Item, List<Item>>();
+        
+        //***ADD THE RECIPE REQUIREMENTS
         waterRecipe.Add(masterItemTable.GetItem(7));
         waterRecipe.Add(masterItemTable.GetItem(2));
         waterRecipe.Add(masterItemTable.GetItem(16));
@@ -67,6 +72,7 @@ public class CraftingOutput : MonoBehaviour
         yellowPotionRecipe.Add(masterItemTable.GetItem(16));
         yellowPotionRecipe.Add(masterItemTable.GetItem(8));
 
+        //Add the recipe to the dictionary and define what the output item will be
         allRecipes.Add(masterItemTable.GetItem(14), waterRecipe);
         allRecipes.Add(masterItemTable.GetItem(8), ironBallRecipe);
         allRecipes.Add(masterItemTable.GetItem(15), yellowPotionRecipe);
@@ -74,9 +80,10 @@ public class CraftingOutput : MonoBehaviour
 
     public void GetOutput(List<ItemSlot> panel)
     {
+        //For each loop through the allRecipes dictionary for each key (recipe) then output the item into the output box and consume the items for the recipe.
         foreach (Item recipeItemType in allRecipes.Keys)
         {
-            List<Item> recipe = allRecipes[recipeItemType];
+            List<Item> recipe = allRecipes[recipeItemType]; //the current recipe to test and loop through.
 
             bool recipeFound = true;
 
@@ -91,7 +98,7 @@ public class CraftingOutput : MonoBehaviour
                     }
                 }
 
-                if (recipeFound)
+                if (recipeFound) //what to do if the recipe is found. call the consume function and then set the output box contents to the item that is outputted.
                 {
                     ConsumeItems(panel, recipe);
                     itemSlot.SetContents(recipeItemType, 1);
@@ -103,11 +110,12 @@ public class CraftingOutput : MonoBehaviour
 
     public void ConsumeItems(List<ItemSlot> panel, List<Item> recipe)
     {
+        //loop through the items and consume if they are the same.
         for (int i = 0; i < 9; i++)
         {
             if (panel[i].ItemInSlot != recipe[i])
             {
-
+                Debug.Log("Not the item.");
             }
             else
             {
