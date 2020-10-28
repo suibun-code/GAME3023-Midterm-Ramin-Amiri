@@ -45,11 +45,11 @@ public class CraftingOutput : MonoBehaviour
         waterRecipe.Add(masterItemTable.GetItem(16));
         waterRecipe.Add(masterItemTable.GetItem(16));
 
-        ironBallRecipe.Add(masterItemTable.GetItem(16));
-        ironBallRecipe.Add(masterItemTable.GetItem(14));
-        ironBallRecipe.Add(masterItemTable.GetItem(16));
-        ironBallRecipe.Add(masterItemTable.GetItem(16));
+        ironBallRecipe.Add(masterItemTable.GetItem(2));
         ironBallRecipe.Add(masterItemTable.GetItem(3));
+        ironBallRecipe.Add(masterItemTable.GetItem(16));
+        ironBallRecipe.Add(masterItemTable.GetItem(16));
+        ironBallRecipe.Add(masterItemTable.GetItem(16));
         ironBallRecipe.Add(masterItemTable.GetItem(16));
         ironBallRecipe.Add(masterItemTable.GetItem(16));
         ironBallRecipe.Add(masterItemTable.GetItem(16));
@@ -64,7 +64,16 @@ public class CraftingOutput : MonoBehaviour
         foreach (Item recipeItemType in allRecipes.Keys)
         {
             List<Item> test = allRecipes[recipeItemType];
-
+            
+            bool recipeFound = true;
+            if (test == ironBallRecipe)
+            {
+                Debug.Log("NICE!@!!!");
+            }
+            else if (test == waterRecipe)
+            {
+                Debug.Log("LOOOOL");
+            }
 
             if (itemSlot.ItemInSlot == masterItemTable.GetItem(16))
             {
@@ -73,13 +82,16 @@ public class CraftingOutput : MonoBehaviour
                     if (panel[i].ItemInSlot != test[i])
                     {
                         Debug.Log("not same");
-                        return;
+                        recipeFound = false;
                     }
                 }
 
+                if (recipeFound)
+                {
                 ConsumeItems(panel);
-                itemSlot.SetContents(masterItemTable.GetItem(14), 1);
+                itemSlot.SetContents(recipeItemType, 1);
                 Debug.Log("DONE");
+                }
             }
         }
     }
